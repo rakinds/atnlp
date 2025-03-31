@@ -1,1 +1,13 @@
-
+# Python dependencies required for development
+torch
+transformers
+datasets
+outlines
+pandas
+seaborn
+matplotlib
+sklearn
+rouge
+nltk
+random
+re
