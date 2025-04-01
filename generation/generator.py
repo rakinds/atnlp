@@ -101,7 +101,7 @@ def main():
         interval += 1
     
     # Save results to CSV
-    saved_name = "distractors.csv"
+    saved_name = "results/generated_distractors.csv"
     docs = pd.DataFrame(rows)
     docs.to_csv(saved_name, index=False)
     print(f"Cleaned distractors saved to {saved_name}")
