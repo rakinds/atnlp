@@ -21,6 +21,6 @@ The distractor code can be run by simply running
 The classic metrics that are used to evaluate the generated distractors are BLEU, BLEURT, ROUGE, Jaccard and TTR. Corresponding scripts can be found under `evaluation/classic_metrics/`. 
 
 ### QA models
-The Question Answering models are used to experimentically evaluate the generated distractors. We make use of a set or 'classroom' of MC QA models, which can be run using `classroom.py` under `evaluation/classroom/. Simply change the `model_name` variable to evaluate a certain QA model and run the script. 
+The Question Answering models are used to experimentically evaluate the generated distractors. We make use of a set or 'classroom' of MC QA models, which can be run using `classroom.py` under `evaluation/classroom/`. Simply change the `model_name` variable to evaluate a certain QA model and run the script. 
 
 In this folder, you can also find code to calculate the confidence intervals for the QA models' answers as well as code to calculate the overall mean.
