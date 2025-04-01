@@ -7,6 +7,23 @@ The new generated distractors + question + correct answer are given to the BERT 
 3. Records the confidence and prediction for each option
 4. Counts how often a distractor was ranked above the correct answer
 5. Saves the results to a CSV file for further analysis
+
+Model options:
+* albert/albert-base-v2
+* albert/albert-large-v2
+* google-bert/bert-base-uncased
+* google-bert/bert-large-uncased
+* dmis-lab/biobert-base-cased-v1.2
+* michiyasunaga/BioLinkBERT-base
+* allenai/biomed_roberta_base
+* microsoft/BiomedNLP-BiomedBERT-base-uncased-abstract-fulltext
+* seyonec/ChemBERTa-zinc-base-v1
+* microsoft/deberta-v3-base
+* microsoft/deberta-v3-large
+* distilbert/distilbert-base-uncased
+* FacebookAI/roberta-base
+* FacebookAI/roberta-large
+* allenai/scibert_scivocab_uncased
 """
 
 from transformers import AutoModelForMultipleChoice, TrainingArguments, AutoTokenizer, AutoModelForCausalLM
@@ -24,8 +41,8 @@ def main():
     docs = pd.read_csv("835_test_distractors.csv")
     docs.head()
 
-    # Load BERT model
-    model_name = "seyonec/ChemBERTa-zinc-base-v1"
+  # Load BERT model
+    model_name = "seyonec/ChemBERTa-zinc-base-v1" # Change model name here 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForMultipleChoice.from_pretrained(model_name)
 
@@ -34,7 +51,10 @@ def main():
     a_predicted = []
 
     eval_rows = []  # store rows for csv analysis
+
+    # Comment / uncomment the right line to evaluate llama distractors or original distractors
     confusion_counts = {"llama_distractor1": 0, "llama_distractor2": 0, "llama_distractor3": 0}
+    #confusion_counts = {"original_distractor1": 0, "original_distractor2": 0, "original_distractor3": 0}
 
     for i in range(len(docs)):
         # Extract question and correct answer
@@ -43,12 +63,16 @@ def main():
 
         # Extract options and shuffle
         options = [
-            docs.loc[i, "llama_distractor1"],
-            docs.loc[i, "llama_distractor2"],
-            docs.loc[i, "llama_distractor3"],
+            docs.loc[i, "llama_distractor1"], # change to original_distractor1 to evaluate original distractors
+            docs.loc[i, "llama_distractor2"], # change to original_distractor2 to evaluate original distractors
+            docs.loc[i, "llama_distractor3"], # change to original_distractor3 to evaluate original distractors
             correct_answer
         ]
+
+        # Comment / uncomment the right line to evaluate llama distractors or original distractors
         option_labels = ["llama_distractor1", "llama_distractor2", "llama_distractor3", "correct"]
+        #option_labels = ['original_distractor1', 'original_distractor2', 'original_distractor3', 'correct']
+
         paired_options = list(zip(options, option_labels))
         shuffle(paired_options)
 
