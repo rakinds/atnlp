@@ -1,7 +1,7 @@
 """
 Use Question answering model to evaluate distractors.
 
-The new generated distractors + question + correct answer are given to the BERT model which does the following:
+The newly generated or original distractors + question + correct answer are given to the BERT model which does the following:
 1. Calculates the model"s confidence (softmax probability) for each option
 2. Checks if the model chose the correct answer
 3. Records the confidence and prediction for each option
