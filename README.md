@@ -21,6 +21,31 @@ The distractor code can be run by simply running
 The classic metrics that are used to evaluate the generated distractors are BLEU, BLEURT, ROUGE, Jaccard and TTR. Corresponding scripts can be found under `evaluation/classic_metrics/`. These evaluation methods use the data files present in the `evaluation/classic_metrics/data/` folder, which contain reformatted versions of the output from the Llama generation script as well as the original SciQ distractors, for easier processing.
 
 ### QA models
-The Question Answering models are used to experimentically evaluate the generated distractors. We make use of a set or 'classroom' of MC QA models, which can be run using `classroom.py` under `evaluation/classroom/`. Simply change the `model_name` variable to evaluate a certain QA model and run the script. 
+The Question Answering models are used to experimentically evaluate the generated distractors. We make use of a set or 'classroom' of MC QA models, which can be run using `classroom.py` under `evaluation/classroom/`. 
 
-In this folder, you can also find code to calculate the confidence intervals for the QA models' answers as well as code to calculate the overall mean.
+<b>Usage example</b>
+
+    python3 classroom.py -o -t hf_aBcDeFgHIJkLmNoPQrsTuVwXYz -m seyonec/ChemBERTa-zinc-base-v1
+
+There are several commandline parameters available:
+
+<b>Commandline options classroom.py:</b>
+
+    -o  Evaluate original distractors
+    -g  Evaluate generated distractors (default)
+    -m  Define model to use in evaluation
+    -t  Add a HuggingFace token (needed for some models)
+
+In this folder, you can also find code to calculate the confidence intervals for each type of QA models' answers as well as code to calculate the overall mean.
+
+<b>Commandline options confidence_analysis.py:</b>
+
+    -o  - Evaluate original distractors
+    -g  - Evaluate generated distractors (default)
+    -m  - Define model folder to evaluate
+
+<b>Commandline options total_mean.py:</b>
+
+    -o - Evaluate original distractors
+    -g - Evaluate generated distractors (default)
+
