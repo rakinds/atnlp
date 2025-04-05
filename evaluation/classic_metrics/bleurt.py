@@ -8,9 +8,17 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 
 
+def compute_bleurt(reference, candidate):
+    """Function to compute BLEURT score"""
+    inputs = tokenizer(reference, candidate, return_tensors="pt")
+    with torch.no_grad():
+        score = model(**inputs).logits.squeeze().item()
+    return score
+
+
 def main():
     # Load CSV
-    df = pd.read_csv("../../generation/results/generated_distractors.csv")
+    df = pd.read_csv("llama_distractors.csv")  # Change to your file path
     
     # Display first few rows
     print(df.head())
@@ -20,23 +28,11 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForSequenceClassification.from_pretrained(model_name)
     
-    # Function to compute BLEURT score
-    def compute_bleurt(reference, candidate):
-        inputs = tokenizer(reference, candidate, return_tensors="pt")
-        with torch.no_grad():
-            score = model(**inputs).logits.squeeze().item()
-        return score
-    
     # Apply BLEURT to all rows
     df["bleurt_score"] = df.apply(lambda row: compute_bleurt(row["question"], row["option"]), axis=1)
     
     # Display results
     print(df[["question", "option", "bleurt_score", "is_correct"]])
-    
-    # Plot BLEURT scores distribution
-    sns.boxplot(x=df["is_correct"], y=df["bleurt_score"])
-    plt.title("BLEURT Score Distribution for Correct vs. Incorrect Answers")
-    plt.show()
     
     # Print average scores
     print(df.groupby("is_correct")["bleurt_score"].mean())
