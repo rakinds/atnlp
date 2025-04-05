@@ -2,13 +2,11 @@
 
 import pandas as pd
 import torch
-import seaborn as sns
-import matplotlib.pyplot as plt
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from sklearn.metrics import accuracy_score, precision_score, recall_score
 
 
-def compute_bleurt(reference, candidate):
+def compute_bleurt(reference, candidate, tokenizer, model):
     """Function to compute BLEURT score"""
     inputs = tokenizer(reference, candidate, return_tensors="pt")
     with torch.no_grad():
@@ -18,18 +16,18 @@ def compute_bleurt(reference, candidate):
 
 def main():
     # Load CSV
-    df = pd.read_csv("llama_distractors.csv")  # Change to your file path
+    df = pd.read_csv("data/llama_distractors.csv")
     
     # Display first few rows
     print(df.head())
-    
+
     # Load BLEURT
-    model_name = "Elron/bleurt-base-512"
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForSequenceClassification.from_pretrained(model_name)
-    
+    token = "" # add HF token here to use this model
+    tokenizer = AutoTokenizer.from_pretrained("Elron/bleurt-base-512", token=token)
+    model = AutoModelForSequenceClassification.from_pretrained("Elron/bleurt-base-512", token=token)
+
     # Apply BLEURT to all rows
-    df["bleurt_score"] = df.apply(lambda row: compute_bleurt(row["question"], row["option"]), axis=1)
+    df["bleurt_score"] = df.apply(lambda row: compute_bleurt(row["question"], row["option"], tokenizer, model), axis=1)
     
     # Display results
     print(df[["question", "option", "bleurt_score", "is_correct"]])
@@ -45,7 +43,7 @@ def main():
     precision = precision_score(df["is_correct"], df["bleurt_predicted"])
     recall = recall_score(df["is_correct"], df["bleurt_predicted"])
     
-    print(f"Accuracy: {accuracy:.2f}, Precision: {precision:.2f}, Recall: {recall:.2f}")
+    print(f"Accuracy: {accuracy: .2f}, Precision: {precision: .2f}, Recall: {recall: .2f}")
 
 
 if __name__ == "__main__":

@@ -18,7 +18,7 @@ The distractor code can be run by simply running
 
 ## Evaluation 
 ### Classic Metrics
-The classic metrics that are used to evaluate the generated distractors are BLEU, BLEURT, ROUGE, Jaccard and TTR. Corresponding scripts can be found under `evaluation/classic_metrics/`. 
+The classic metrics that are used to evaluate the generated distractors are BLEU, BLEURT, ROUGE, Jaccard and TTR. Corresponding scripts can be found under `evaluation/classic_metrics/`. These evaluation methods use the data files present in the `evaluation/classic_metrics/data/` folder, which contain reformatted versions of the output from the Llama generation script as well as the original SciQ distractors, for easier processing.
 
 ### QA models
 The Question Answering models are used to experimentically evaluate the generated distractors. We make use of a set or 'classroom' of MC QA models, which can be run using `classroom.py` under `evaluation/classroom/`. Simply change the `model_name` variable to evaluate a certain QA model and run the script. 
